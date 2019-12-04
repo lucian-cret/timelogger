@@ -35,7 +35,7 @@ namespace TimeLogger
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Projects}/{action=Index}");
+                    template: "{controller=Projects}/{action=ProjectsList}");
             });
 
             // Seed "database" with example data

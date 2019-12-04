@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,19 @@ namespace TimeLogger.Controllers
 {
     public class ProjectsController : Controller
     {
+		private readonly ILogger<ProjectsController> _logger;
 		private readonly TimeLoggerDbContext _context;
 
-		public ProjectsController(TimeLoggerDbContext context)
+		public ProjectsController(TimeLoggerDbContext context, ILogger<ProjectsController> logger)
 		{
+			_logger = logger;
 			_context = context;
 		}
 
 		[HttpGet]
-		public IActionResult Index()
+		public IActionResult ProjectsList()
 		{
-			var viewModel = new ProjectsViewModel(_context.Projects.ToList());
+			var viewModel = new ProjectListViewModel(_context.Projects);
 			return View(viewModel);
 		}
 	}
