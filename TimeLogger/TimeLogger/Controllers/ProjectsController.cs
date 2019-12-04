@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeLogger.DAL;
+using TimeLogger.Models;
 
 namespace TimeLogger.Controllers
 {
-	[Route("[controller]")]
     public class ProjectsController : Controller
     {
 		private readonly TimeLoggerDbContext _context;
@@ -18,9 +18,10 @@ namespace TimeLogger.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Get()
+		public IActionResult Index()
 		{
-			return Ok(_context.Projects);
+			var viewModel = new ProjectsViewModel(_context.Projects.ToList());
+			return View(viewModel);
 		}
 	}
 }

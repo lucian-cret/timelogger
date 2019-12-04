@@ -1,0 +1,26 @@
+﻿@model ProjectsViewModel
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<table class="table table-bordered table-hover project-table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Deadline</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model.Projects)
+        {
+        <tr class="@((project.Deadline - DateTime.Today).TotalDays < 3 ? "table-danger" : "")">
+            <td>@project.Name</td>
+            <td>@project.Description</td>
+            <td>@project.Deadline.ToString("d")</td>
+            <td><a class="btn btn-primary" href="@Url.Action("LogTime", "Projects", new { id = project.Id })" role="button">Log time</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
