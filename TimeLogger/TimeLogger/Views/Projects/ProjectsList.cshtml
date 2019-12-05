@@ -21,7 +21,7 @@
             <td>@project.Description</td>
             <td>@project.Deadline.ToString("d")</td>
             <td><a class="btn btn-primary" href="@Url.Action("TimeLogsList", "TimeLogs", new { projectId = project.Id })" role="button">View time logs</a></td>
-            <td><a class="btn btn-primary" href="@Url.Action("LogTime", "TimeLogs", new { id = project.Id })" role="button">Log time</a></td>
+            <td><a class="btn btn-primary" href="@Url.Action("LogTime", "TimeLogs", new { projectId = project.Id })" role="button">Log time</a></td>
         </tr>
         }
     </tbody>

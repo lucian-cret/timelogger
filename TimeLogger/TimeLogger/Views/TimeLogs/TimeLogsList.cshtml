@@ -6,16 +6,15 @@
 <table class="table table-bordered table-hover logs-table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">Duration</th>
+            <th scope="col">Worked hours</th>
             <th scope="col">Description</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var log in Model.TimeLogs)
         {
             <tr>
-                <td>@log.Duration.ToString("hh")</td>
+                <td>@log.WorkedHours</td>
                 <td>@log.Description</td>
             </tr>
         }

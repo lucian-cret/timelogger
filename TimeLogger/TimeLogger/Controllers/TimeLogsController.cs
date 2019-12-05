@@ -46,11 +46,16 @@ namespace TimeLogger.Controllers
 
         [HttpPost]
         [Route("/{projectId}/logtime")]
+        [ValidateAntiForgeryToken]
         public IActionResult LogTime(LogTimeViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             TimeLog log = new TimeLog
             {
-                Duration = model.Duration,
+                WorkedHours = model.WorkedHours,
                 Description = model.Description,
                 ProjectId = model.ProjectId
             };
