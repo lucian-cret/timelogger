@@ -57,6 +57,7 @@ namespace TimeLogger.Controllers
             {
                 WorkedHours = model.WorkedHours,
                 Description = model.Description,
+                Date = DateTime.Now,
                 ProjectId = model.ProjectId
             };
             _context.TimeLogs.Add(log);

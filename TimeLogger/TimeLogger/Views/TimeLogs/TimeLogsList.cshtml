@@ -8,6 +8,7 @@
         <tr>
             <th scope="col">Worked hours</th>
             <th scope="col">Description</th>
+            <th scope="col">Date</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
             <tr>
                 <td>@log.WorkedHours</td>
                 <td>@log.Description</td>
+                <td>@log.Date.ToString("G")</td>
             </tr>
         }
     </tbody>
