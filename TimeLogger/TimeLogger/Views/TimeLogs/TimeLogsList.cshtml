@@ -24,7 +24,12 @@
         }
     </tbody>
 </table>
-<a class="btn btn-secondary" href="@Url.Action("ProjectsList", "Projects")" role="button">Back to projects list</a>
+@if (Model.ProjectDeadline > DateTime.Now)
+{
+    <a class="btn btn-primary" href="@Url.Action("LogTime", "TimeLogs", new { projectId = Model.ProjectId })" role="button">Log time</a>
+    <br/>
+}
+<a class="btn btn-secondary mt-2" href="@Url.Action("ProjectsList", "Projects")" role="button">Back to projects list</a>
 @section Scripts {
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">

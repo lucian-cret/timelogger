@@ -37,6 +37,11 @@ namespace TimeLogger.Controllers
         [Route("/{projectId}/logtime")]
         public IActionResult LogTime([FromRoute] int projectId)
         {
+            var project = _context.Projects.Find(projectId);
+            if (project.Deadline < DateTime.Now)
+            {
+                return RedirectToAction("TimeLogsList", new { projectId });
+            }
             var viewModel = new LogTimeViewModel
             {
                 ProjectId = projectId
