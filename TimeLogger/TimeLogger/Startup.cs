@@ -66,7 +66,7 @@ namespace TimeLogger
                 Id = 3,
                 Name = "Test Project 3",
                 Description = "Test Project 3 Description",
-                Deadline = DateTime.Now.AddDays(1)
+                Deadline = DateTime.Now.AddDays(-2)
             };
 
             var testProject4 = new Project

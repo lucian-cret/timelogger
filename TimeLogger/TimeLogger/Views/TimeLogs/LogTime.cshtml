@@ -23,4 +23,6 @@
         @Html.HiddenFor(s => s.ProjectId)
         <button type="submit" class="btn btn-primary">Log time</button>
     </form>
+    <a class="btn btn-secondary mt-2" href="@Url.Action("TimeLogsList", "TimeLogs", new { projectId = Model.ProjectId})" role="button">Back to time logs list</a>    
+    <a class="btn btn-secondary mt-2" href="@Url.Action("ProjectsList", "Projects")" role="button">Back to projects list</a>
 </div>
