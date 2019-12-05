@@ -27,6 +27,10 @@ namespace TimeLogger.Controllers
         [Route("/{projectId}")]
         public IActionResult TimeLogsList([FromRoute] int projectId)
         {
+            if (projectId == 0)
+            {
+                return RedirectToAction("ProjectsList", "Projects");
+            }
             var project = _context.Projects.Find(projectId);
             _context.Entry(project).Collection(t => t.TimeLogs).Load();
             var viewModel = new TimeLogListViewModel(project);

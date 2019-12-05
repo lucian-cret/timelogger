@@ -18,6 +18,10 @@ namespace TimeLogger
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
+                .ConfigureLogging(options =>
+                {
+                    options.AddConsole();
+                })
                 .Build();
 
             host.Run();

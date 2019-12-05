@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TimeLogger.DAL;
 using TimeLogger.DAL.Entities;
+using TimeLogger.Middleware;
 
 namespace TimeLogger
 {
@@ -30,6 +31,7 @@ namespace TimeLogger
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseExceptionHandlingMiddleware();
             app.UseStaticFiles();
             app.UseMvc(routes =>
             {
