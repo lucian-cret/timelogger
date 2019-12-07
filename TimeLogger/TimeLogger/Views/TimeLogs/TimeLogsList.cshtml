@@ -5,12 +5,19 @@
 @section Styles {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
 }
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary()
+    </div>
+}
 <table class="table table-bordered table-hover logs-table">
     <thead>
         <tr>
             <th scope="col">Worked hours</th>
             <th scope="col">Description</th>
             <th scope="col">Date</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +27,13 @@
                 <td>@log.WorkedHours</td>
                 <td>@log.Description</td>
                 <td>@log.Date.ToString("G")</td>
+                <td>
+                    <form asp-controller="TimeLogs" asp-action="DeleteLog">
+                        <input type="hidden" id="TimeLogId" name="TimeLogId" value="@log.Id" />
+                        <input type="hidden" id="ProjectId" name="ProjectId" value="@Model.ProjectId" />
+                        <button type="submit" class="btn btn-primary">Delete</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
@@ -27,14 +41,16 @@
 @if (Model.ProjectDeadline > DateTime.Now)
 {
     <a class="btn btn-primary" href="@Url.Action("LogTime", "TimeLogs", new { projectId = Model.ProjectId })" role="button">Log time</a>
-    <br/>
+    <br />
 }
 <a class="btn btn-secondary mt-2" href="@Url.Action("ProjectsList", "Projects")" role="button">Back to projects list</a>
 @section Scripts {
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.logs-table').DataTable();
+            $('.logs-table').DataTable({
+                "order": []
+            });
         });
     </script>
 }

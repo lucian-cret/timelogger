@@ -12,7 +12,6 @@ using TimeLogger.Models;
 
 namespace TimeLogger.Controllers
 {
-    [Route("[controller]")]
     public class TimeLogsController : Controller
     {
         private readonly ILogger<TimeLogsController> _logger;
@@ -27,9 +26,9 @@ namespace TimeLogger.Controllers
         [Route("/{projectId}")]
         public IActionResult TimeLogsList([FromRoute] int projectId)
         {
-            if (projectId == 0)
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("ProjectsList", "Projects");
+                return View();
             }
             var project = _context.Projects.Find(projectId);
             _context.Entry(project).Collection(t => t.TimeLogs).Load();
@@ -71,6 +70,25 @@ namespace TimeLogger.Controllers
             };
             _context.TimeLogs.Add(log);
             _context.SaveChanges();
+            return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteLog(DeleteLogViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                if (model.ProjectId != 0)
+                {
+                    return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
+                }
+                return RedirectToAction("ProjectsList", "Project");
+            }
+            var timeLog = _context.TimeLogs.Find(model.TimeLogId);
+            _context.Remove(timeLog);
+            _context.SaveChanges();
+
             return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
         }
     }
