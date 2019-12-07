@@ -21,7 +21,9 @@
             <tr>
                 <td>@project.Name</td>
                 <td>@project.Description</td>
-                <td>@project.Deadline.ToString("d")</td>
+                <td data-sort="@project.Deadline.ToString("s")">
+                    @project.Deadline.ToString("d")
+                </td>
                 <td><a class="btn btn-primary" href="@Url.Action("TimeLogsList", "TimeLogs", new { projectId = project.Id })" role="button">View time logs</a></td>
                 <td>
                     @if (project.Deadline > DateTime.Now)

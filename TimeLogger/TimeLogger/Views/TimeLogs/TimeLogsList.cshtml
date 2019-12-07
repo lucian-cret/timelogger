@@ -23,7 +23,9 @@
             <tr>
                 <td>@log.WorkedHours</td>
                 <td>@log.Description</td>
-                <td>@log.Date.ToString("G")</td>
+                <td data-sort="@log.Date.ToString("s")">
+                    @log.Date.ToString("G")
+                </td>
                 @if (Model.ProjectDeadline > DateTime.Now)
                 {
                     <td>
