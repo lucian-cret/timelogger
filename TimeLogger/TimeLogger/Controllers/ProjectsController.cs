@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TimeLogger.DAL;
 using TimeLogger.Models;
 
 namespace TimeLogger.Controllers
 {
-    public class ProjectsController : Controller
+	public class ProjectsController : Controller
     {
 		private readonly ILogger<ProjectsController> _logger;
 		private readonly TimeLoggerDbContext _context;

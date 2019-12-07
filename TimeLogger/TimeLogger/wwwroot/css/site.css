@@ -56,7 +56,7 @@ body {
 }
 
 /* Validation */
-label.error {
+span.error {
     color: red;
     font-style: italic;
 }

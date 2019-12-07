@@ -5,6 +5,7 @@ namespace TimeLogger.Models
     public class LogTimeViewModel
     {
         public int ProjectId { get; set; }
+        [Display(Name = "Worked hours")]
         [Range(0.5, 8.0)]
         public float WorkedHours { get; set; }
         [Required]

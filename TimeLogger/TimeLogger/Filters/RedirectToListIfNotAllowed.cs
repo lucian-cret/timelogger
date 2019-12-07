@@ -22,6 +22,10 @@ namespace TimeLogger.Filters
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            if (!context.ModelState.IsValid)
+            {
+                context.Result = new RedirectToActionResult("ProjectsList", "Projects", null);
+            }
             //check for projectId parameter
             var projectIdKeyValuePair = context.ActionArguments.SingleOrDefault(p => p.Key.Equals(_requiredParameterName));
 
@@ -32,8 +36,8 @@ namespace TimeLogger.Filters
                 projectId = (int)projectIdKeyValuePair.Value;
             }
 
-            //check for project Id in form collection
-            if (projectId == 0)
+            //check for projectId in form collection
+            if (projectId == 0 && context.HttpContext.Request.HasFormContentType)
             {
                 var formCollection = context.HttpContext.Request.Form;
                 if (formCollection.ContainsKey(_requiredParameterName))
@@ -46,14 +50,28 @@ namespace TimeLogger.Filters
             {
                 _logger.LogWarning($"Required parameter for redirection to list missing: {_requiredParameterName}. Redirecting to homepage.");
                 context.Result = new RedirectToActionResult("ProjectsList", "Projects", null);
+                return;
             }
 
+            context.Result = CheckProjectDeadline(projectId, context.ActionDescriptor.DisplayName);
+        }
+
+        private RedirectToActionResult CheckProjectDeadline(int projectId, string actionName)
+        {
             var project = _dbContext.Projects.Find(projectId);
-            if (project.Deadline < DateTime.Now)
+            if (project != null)
             {
-                _logger.LogInformation($"Attempted operation not allowed: {context.ActionDescriptor.DisplayName}. Redirecting to list.");
-                context.Result = new RedirectToActionResult("TimeLogsList", "TimeLogs", new { projectId });
+                if (project.Deadline < DateTime.Now)
+                {
+                    _logger.LogInformation($"Attempted operation not allowed: {actionName}. Redirecting to list.");
+                    return new RedirectToActionResult("TimeLogsList", "TimeLogs", new { projectId });
+                }
             }
+            else
+            {
+                return new RedirectToActionResult("ProjectsList", "Projects", null);
+            }
+            return null;
         }
     }
 }

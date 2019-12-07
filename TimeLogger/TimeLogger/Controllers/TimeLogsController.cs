@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using TimeLogger.DAL;
@@ -21,25 +22,32 @@ namespace TimeLogger.Controllers
         [HttpGet]
         public IActionResult TimeLogsList(int projectId)
         {
-            if (!ModelState.IsValid)
+            if (projectId != 0)
             {
-                return View();
+                var project = _context.Projects.Find(projectId);
+                if (project != null)
+                {
+                    _context.Entry(project).Collection(t => t.TimeLogs).Load();
+                    var viewModel = new TimeLogListViewModel(project);
+                    return View(viewModel);
+                }
             }
-            var project = _context.Projects.Find(projectId);
-            _context.Entry(project).Collection(t => t.TimeLogs).Load();
-            var viewModel = new TimeLogListViewModel(project);
-            return View(viewModel);
+            return RedirectToAction("ProjectsList", "Projects");
         }
 
         [HttpGet]
         [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         public IActionResult LogTime(int projectId)
         {
-            var viewModel = new LogTimeViewModel
+            if (projectId != 0)
             {
-                ProjectId = projectId
-            };
-            return View(viewModel);
+                var viewModel = new LogTimeViewModel
+                {
+                    ProjectId = projectId
+                };
+                return View(viewModel);
+            }
+            return RedirectToAction("ProjectsList", "Projects");
         }
 
         [HttpPost]
@@ -58,8 +66,16 @@ namespace TimeLogger.Controllers
                 Date = DateTime.Now,
                 ProjectId = model.ProjectId
             };
-            _context.TimeLogs.Add(log);
-            _context.SaveChanges();
+            try
+            {
+                _context.TimeLogs.Add(log);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Error saving new time log to database.", ex);
+                throw;
+            }
             return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
         }
 
@@ -68,17 +84,24 @@ namespace TimeLogger.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteLog(DeleteLogViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                if (model.ProjectId != 0)
-                {
-                    return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
-                }
-                return RedirectToAction("ProjectsList", "Project");
-            }
             var timeLog = _context.TimeLogs.Find(model.TimeLogId);
-            _context.Remove(timeLog);
-            _context.SaveChanges();
+            if (timeLog != null)
+            {
+                try
+                {
+                    _context.Remove(timeLog);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError($"Error deleting time log {model.TimeLogId} from database.", ex);
+                    throw;
+                }
+            }
+            else
+            {
+                _logger.LogWarning($"Tried deleting time log {model.TimeLogId} but it was not found.");
+            }
 
             return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
         }
