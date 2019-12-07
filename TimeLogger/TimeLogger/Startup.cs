@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TimeLogger.DAL;
 using TimeLogger.DAL.Entities;
+using TimeLogger.Filters;
 using TimeLogger.Middleware;
 
 namespace TimeLogger
@@ -20,6 +21,7 @@ namespace TimeLogger
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TimeLoggerDbContext>(options => options.UseInMemoryDatabase("TimeLogger"));
+            services.AddScoped<RedirectToListIfNotAllowed>();
             services.AddMvc();
         }
 
@@ -39,6 +41,7 @@ namespace TimeLogger
                     name: "default",
                     template: "{controller=Projects}/{action=ProjectsList}");
             });
+
 
             // Seed "database" with example data
             var context = app.ApplicationServices.GetService<TimeLoggerDbContext>();

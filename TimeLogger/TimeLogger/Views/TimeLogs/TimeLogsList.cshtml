@@ -17,7 +17,10 @@
             <th scope="col">Worked hours</th>
             <th scope="col">Description</th>
             <th scope="col">Date</th>
-            <th scope="col"></th>
+            @if (Model.ProjectDeadline > DateTime.Now)
+            {
+                <th scope="col"></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -27,13 +30,16 @@
                 <td>@log.WorkedHours</td>
                 <td>@log.Description</td>
                 <td>@log.Date.ToString("G")</td>
-                <td>
-                    <form asp-controller="TimeLogs" asp-action="DeleteLog">
-                        <input type="hidden" id="TimeLogId" name="TimeLogId" value="@log.Id" />
-                        <input type="hidden" id="ProjectId" name="ProjectId" value="@Model.ProjectId" />
-                        <button type="submit" class="btn btn-primary">Delete</button>
-                    </form>
-                </td>
+                @if (Model.ProjectDeadline > DateTime.Now)
+                {
+                    <td>
+                        <form asp-controller="TimeLogs" asp-action="DeleteLog">
+                            <input type="hidden" id="TimeLogId" name="TimeLogId" value="@log.Id" />
+                            <input type="hidden" id="ProjectId" name="ProjectId" value="@Model.ProjectId" />
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </form>
+                    </td>
+                }
             </tr>
         }
     </tbody>

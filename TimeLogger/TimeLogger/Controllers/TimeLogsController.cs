@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using TimeLogger.DAL;
 using TimeLogger.DAL.Entities;
+using TimeLogger.Filters;
 using TimeLogger.Models;
 
 namespace TimeLogger.Controllers
@@ -23,8 +19,7 @@ namespace TimeLogger.Controllers
         }
 
         [HttpGet]
-        [Route("/{projectId}")]
-        public IActionResult TimeLogsList([FromRoute] int projectId)
+        public IActionResult TimeLogsList(int projectId)
         {
             if (!ModelState.IsValid)
             {
@@ -37,14 +32,9 @@ namespace TimeLogger.Controllers
         }
 
         [HttpGet]
-        [Route("/{projectId}/logtime")]
-        public IActionResult LogTime([FromRoute] int projectId)
+        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        public IActionResult LogTime(int projectId)
         {
-            var project = _context.Projects.Find(projectId);
-            if (project.Deadline < DateTime.Now)
-            {
-                return RedirectToAction("TimeLogsList", new { projectId });
-            }
             var viewModel = new LogTimeViewModel
             {
                 ProjectId = projectId
@@ -53,7 +43,7 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
-        [Route("/{projectId}/logtime")]
+        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult LogTime(LogTimeViewModel model)
         {
@@ -74,6 +64,7 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteLog(DeleteLogViewModel model)
         {
