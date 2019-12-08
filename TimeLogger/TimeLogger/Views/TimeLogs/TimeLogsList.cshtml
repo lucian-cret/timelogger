@@ -22,25 +22,25 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var log in Model.TimeLogs)
+        @foreach (var timeLog in Model.TimeLogs)
         {
             <tr>
-                <td>@log.WorkedHours</td>
-                <td>@log.Description</td>
-                <td data-sort="@log.Date.ToString("s")">
-                    @log.Date.ToString("d")
+                <td>@timeLog.WorkedHours</td>
+                <td>@timeLog.Description</td>
+                <td data-sort="@timeLog.Date.ToString("s")">
+                    @timeLog.Date.ToString("d")
                 </td>
                 @if (Model.ProjectDeadline > DateTime.Now)
                 {
                     <td>
-                        <a href="@Url.Action("EditLog", "TimeLogs", new { logId = log.Id})" class="btn btn-primary">Edit</a>
+                        <a href="@Url.Action("EditLog", "TimeLogs", new { timeLogId = timeLog.Id})" class="btn btn-primary">Edit</a>
                     </td>
                 }
                 @if (Model.ProjectDeadline > DateTime.Now)
                 {
                     <td>
                         <form asp-controller="TimeLogs" asp-action="DeleteLog">
-                            <input type="hidden" id="TimeLogId" name="TimeLogId" value="@log.Id" />
+                            <input type="hidden" id="TimeLogId" name="TimeLogId" value="@timeLog.Id" />
                             <input type="hidden" id="ProjectId" name="ProjectId" value="@Model.ProjectId" />
                             <button type="submit" class="btn btn-primary">Delete</button>
                         </form>

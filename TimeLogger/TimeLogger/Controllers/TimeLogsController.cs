@@ -106,17 +106,17 @@ namespace TimeLogger.Controllers
             {
                 return View("LogTime", model);
             }
-            TimeLog log = new TimeLog
-            {
-                WorkedHours = model.WorkedHours,
-                Description = model.Description,
-                Date = model.Date,
-                ProjectId = model.ProjectId
-            };
             try
             {
-                _context.TimeLogs.Update(log);
-                _context.SaveChanges();
+                var timeLog = _context.TimeLogs.Find(model.TimeLogId);
+                if (timeLog != null)
+                {
+                    timeLog.WorkedHours = model.WorkedHours;
+                    timeLog.Description = model.Description;
+                    timeLog.Date = model.Date;
+                    timeLog.ProjectId = model.ProjectId;
+                    _context.SaveChanges();
+                }
             }
             catch (DbUpdateException ex)
             {
