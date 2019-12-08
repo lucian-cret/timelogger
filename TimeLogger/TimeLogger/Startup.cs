@@ -22,7 +22,6 @@ namespace TimeLogger
         {
             services.AddDbContext<TimeLoggerDbContext>(options => options.UseInMemoryDatabase("TimeLogger"));
             services.AddScoped<IFiltersCommon, FiltersCommon>();
-            services.AddScoped<RedirectIfProjectNotFound>();
             services.AddScoped<RedirectToListIfNotAllowed>();
             services.AddMvc();
         }

@@ -56,7 +56,6 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(RedirectIfProjectNotFound))]
         [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult LogTime(LogTimeViewModel model)
@@ -104,7 +103,6 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(RedirectIfProjectNotFound))]
         [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult EditLog(LogTimeViewModel model)
@@ -133,7 +131,6 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(RedirectIfProjectNotFound))]
         [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteLog(DeleteLogViewModel model)
