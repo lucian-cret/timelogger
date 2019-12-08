@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using TimeLogger.DAL;
 
 namespace TimeLogger.Filters
@@ -12,28 +10,17 @@ namespace TimeLogger.Filters
     {
         private readonly ILogger<RedirectToListIfNotAllowed> _logger;
         private readonly TimeLoggerDbContext _dbContext;
+        private readonly IFiltersCommon _filtersCommon;
 
-        public RedirectToListIfNotAllowed(TimeLoggerDbContext dbContext, ILogger<RedirectToListIfNotAllowed> logger)
+        public RedirectToListIfNotAllowed(TimeLoggerDbContext dbContext, ILogger<RedirectToListIfNotAllowed> logger, IFiltersCommon filtersCommon)
         {
             _logger = logger;
             _dbContext = dbContext;
+            _filtersCommon = filtersCommon;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            int projectId = GetParameterFromRequest<int>(context, "projectId");
-
-            if (projectId == 0)
-            {
-                long timeLogId = GetParameterFromRequest<long>(context, "timeLogId");
-                if (timeLogId != 0)
-                {
-                    var timeLog = _dbContext.TimeLogs.Find(timeLogId);
-                    if (timeLog != null)
-                    {
-                        projectId = timeLog.ProjectId;
-                    }
-                }
-            }
+            int projectId = _filtersCommon.GetProjectIdFromRequest(context, _dbContext);
 
             if (projectId == 0)
             {
@@ -43,16 +30,6 @@ namespace TimeLogger.Filters
             }
 
             context.Result = RedirectBasedOnProjectDeadline(projectId, context.ActionDescriptor.DisplayName);
-        }
-
-        private T GetParameterFromRequest<T>(ActionExecutingContext context, string parameterName)
-        {
-            if (context.ModelState.TryGetValue(parameterName, out var modelState)
-                && modelState.RawValue is string parameterValueAsString)
-            {
-                return (T)Convert.ChangeType(parameterValueAsString, typeof(T));
-            }
-            return default(T);
         }
 
         private RedirectToActionResult RedirectBasedOnProjectDeadline(int projectId, string actionName)

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using TimeLogger.Controllers;
 using TimeLogger.DAL;
 using TimeLogger.DAL.Entities;
@@ -136,9 +135,9 @@ namespace TimeLogger.UnitTests.Controllers
         }
 
         [Fact]
-        public void LogTimePost_ValidTimeLog_TimeLogAddedToDbAndShowTimeLogListViewForProject()
+        public void LogTimePost_ValidTimeLog_ShowTimeLogListViewForProject()
         {
-            using (DbContextInMemory = GetDatabaseContext(nameof(LogTimePost_ValidTimeLog_TimeLogAddedToDbAndShowTimeLogListViewForProject)))
+            using (DbContextInMemory = GetDatabaseContext(nameof(LogTimePost_ValidTimeLog_ShowTimeLogListViewForProject)))
             {
                 DbContextInMemory.Projects.Add(new Project { Id = 2 });
                 DbContextInMemory.SaveChanges();
@@ -151,7 +150,7 @@ namespace TimeLogger.UnitTests.Controllers
                 ProjectId = 2
             };
 
-            using (DbContextInMemory = GetDatabaseContext(nameof(LogTimePost_ValidTimeLog_TimeLogAddedToDbAndShowTimeLogListViewForProject)))
+            using (DbContextInMemory = GetDatabaseContext(nameof(LogTimePost_ValidTimeLog_ShowTimeLogListViewForProject)))
             {
                 _controller = new TimeLogsController(_mockLogger.Object, DbContextInMemory);
 
@@ -159,33 +158,6 @@ namespace TimeLogger.UnitTests.Controllers
                 Assert.Equal("TimeLogsList", result.ActionName);
                 Assert.True(result.RouteValues.ContainsKey("projectId"));
                 Assert.Equal(2, result.RouteValues["projectId"]);
-            }
-        }
-
-        [Fact]
-        public void LogTimePost_ModelProjectDoesNotExist_RedirectToProjectList()
-        {
-            using (DbContextInMemory = GetDatabaseContext(nameof(LogTimePost_ValidTimeLog_TimeLogAddedToDbAndShowTimeLogListViewForProject)))
-            {
-                DbContextInMemory.Projects.Add(new Project { Id = 2 });
-                DbContextInMemory.SaveChanges();
-            }
-
-            var model = new LogTimeViewModel()
-            {
-                WorkedHours = 2f,
-                Description = "test",
-                Date = DateTime.Today,
-                ProjectId = 5
-            };
-
-            using (DbContextInMemory = GetDatabaseContext(nameof(LogTimePost_ValidTimeLog_TimeLogAddedToDbAndShowTimeLogListViewForProject)))
-            {
-                _controller = new TimeLogsController(_mockLogger.Object, DbContextInMemory);
-
-                var result = Assert.IsType<RedirectToActionResult>(_controller.LogTime(model));
-                Assert.Equal("ProjectsList", result.ActionName);
-                Assert.Equal("Projects", result.ControllerName);
             }
         }
 
@@ -213,6 +185,179 @@ namespace TimeLogger.UnitTests.Controllers
             _controller = new TimeLogsController(_mockLogger.Object, mockDbContext.Object);
 
             Assert.Throws<DbUpdateException>(() => _controller.LogTime(model));
+        }
+        #endregion
+
+        #region EditLog Get
+        [Theory]
+        [InlineData(500)]
+        [InlineData(-2)]
+        public void EditLogGet_InvalidOrNonExistingTimeLogId_RedirectToProjectList(long timeLogId)
+        {
+            DbContextInMemory = GetDatabaseContext(nameof(EditLogGet_InvalidOrNonExistingTimeLogId_RedirectToProjectList));
+            _controller = new TimeLogsController(_mockLogger.Object, DbContextInMemory);
+
+            var result = Assert.IsType<RedirectToActionResult>(_controller.EditLog(timeLogId));
+            Assert.Equal("ProjectsList", result.ActionName);
+            Assert.Equal("Projects", result.ControllerName);
+        }
+
+        [Fact]
+        public void EditLogGet_ExistingTimeLogId_ShowLogTimeView()
+        {
+            using (DbContextInMemory = GetDatabaseContext(nameof(EditLogGet_ExistingTimeLogId_ShowLogTimeView)))
+            {
+                DbContextInMemory.TimeLogs.Add(new TimeLog { Id = 5 });
+                DbContextInMemory.SaveChanges();
+            }
+
+            using (DbContextInMemory = GetDatabaseContext(nameof(EditLogGet_ExistingTimeLogId_ShowLogTimeView)))
+            {
+                _controller = new TimeLogsController(_mockLogger.Object, DbContextInMemory);
+
+                var result = Assert.IsType<ViewResult>(_controller.EditLog(5));
+                var resultModel = Assert.IsType<LogTimeViewModel>(result.Model);
+                Assert.Equal(5, resultModel.TimeLogId);
+            }
+        }
+        #endregion
+
+        #region EditLog Post
+        [Fact]
+        public void EditLogPost_TimeLogExists_ShowTimeLogListViewForProject()
+        {
+            using (DbContextInMemory = GetDatabaseContext(nameof(EditLogPost_TimeLogExists_ShowTimeLogListViewForProject)))
+            {
+                DbContextInMemory.Projects.Add(new Project { Id = 1 });
+                DbContextInMemory.TimeLogs.Add(new TimeLog { Id = 2, ProjectId = 1 });
+                DbContextInMemory.SaveChanges();
+            }
+
+            var model = new LogTimeViewModel()
+            {
+                TimeLogId = 2,
+                WorkedHours = 2f,
+                Description = "test",
+                ProjectId = 1
+            };
+
+            using (DbContextInMemory = GetDatabaseContext(nameof(EditLogPost_TimeLogExists_ShowTimeLogListViewForProject)))
+            {
+                _controller = new TimeLogsController(_mockLogger.Object, DbContextInMemory);
+
+                var result = Assert.IsType<RedirectToActionResult>(_controller.EditLog(model));
+                Assert.Equal("TimeLogsList", result.ActionName);
+                Assert.True(result.RouteValues.ContainsKey("projectId"));
+                Assert.Equal(1, result.RouteValues["projectId"]);
+            }
+        }
+
+        [Fact]
+        public void EditLogPost_TimeLogDoesNotExists_RedirectToProjectList()
+        {
+            using (DbContextInMemory = GetDatabaseContext(nameof(EditLogPost_TimeLogDoesNotExists_RedirectToProjectList)))
+            {
+                DbContextInMemory.Projects.Add(new Project { Id = 1 });
+                DbContextInMemory.TimeLogs.Add(new TimeLog { Id = 88, ProjectId = 1 });
+                DbContextInMemory.SaveChanges();
+            }
+
+            var model = new LogTimeViewModel()
+            {
+                TimeLogId = 2,
+                WorkedHours = 2f,
+                Description = "test",
+                ProjectId = 1
+            };
+
+            using (DbContextInMemory = GetDatabaseContext(nameof(EditLogPost_TimeLogDoesNotExists_RedirectToProjectList)))
+            {
+                _controller = new TimeLogsController(_mockLogger.Object, DbContextInMemory);
+
+                var result = Assert.IsType<RedirectToActionResult>(_controller.EditLog(model));
+                Assert.Equal("TimeLogsList", result.ActionName);
+                Assert.True(result.RouteValues.ContainsKey("projectId"));
+                Assert.Equal(1, result.RouteValues["projectId"]);
+            }
+        }
+
+        [Fact]
+        public void EditLogPost_SavingThrowsError_ThrowsException()
+        {
+            var mockDbContext = new Mock<TimeLoggerDbContext>();
+            var mockDbSetProject = new Mock<DbSet<Project>>();
+            var mockDbSetTimeLog = new Mock<DbSet<TimeLog>>();
+
+            mockDbContext.Setup(s => s.Projects).Returns(mockDbSetProject.Object);
+            mockDbContext.Setup(s => s.TimeLogs).Returns(mockDbSetTimeLog.Object);
+
+            mockDbSetProject.Setup(s => s.Find(5)).Returns(new Project { Id = 5 });
+            mockDbSetTimeLog.Setup(s => s.Find(1L)).Returns(new TimeLog { Id = 1 }); 
+            mockDbContext.Setup(s => s.SaveChanges()).Throws(new DbUpdateException("", new Exception()));
+
+            var model = new LogTimeViewModel()
+            {
+                TimeLogId = 1,
+                WorkedHours = 2f,
+                Description = "test",
+                Date = DateTime.Today,
+                ProjectId = 5
+            };
+
+            _controller = new TimeLogsController(_mockLogger.Object, mockDbContext.Object);
+
+            Assert.Throws<DbUpdateException>(() => _controller.EditLog(model));
+        }
+        #endregion
+
+        #region DeleteLog
+        [Theory]
+        [InlineData(2)]
+        [InlineData(5)]
+        public void DeleteLog_TimeLogIdExistsOrNot_ShowTimeLogListViewForProject(long timeLogId)
+        {
+            using (DbContextInMemory = GetDatabaseContext(nameof(DeleteLog_TimeLogIdExistsOrNot_ShowTimeLogListViewForProject) + timeLogId))
+            {
+                DbContextInMemory.TimeLogs.Add(new TimeLog { Id = 2 });
+                DbContextInMemory.SaveChanges();
+            }
+
+            var model = new DeleteLogViewModel()
+            {
+               TimeLogId = timeLogId,
+               ProjectId = 2
+            };
+
+            using (DbContextInMemory = GetDatabaseContext(nameof(DeleteLog_TimeLogIdExistsOrNot_ShowTimeLogListViewForProject) + timeLogId))
+            {
+                _controller = new TimeLogsController(_mockLogger.Object, DbContextInMemory);
+
+                var result = Assert.IsType<RedirectToActionResult>(_controller.DeleteLog(model));
+                Assert.Equal("TimeLogsList", result.ActionName);
+                Assert.True(result.RouteValues.ContainsKey("projectId"));
+                Assert.Equal(2, result.RouteValues["projectId"]);
+            }
+        }
+
+        [Fact]
+        public void DeleteLog_SavingThrowsError_ThrowsException()
+        {
+            var mockDbContext = new Mock<TimeLoggerDbContext>();
+            var mockDbSetTimeLog = new Mock<DbSet<TimeLog>>();
+
+            mockDbContext.Setup(s => s.TimeLogs).Returns(mockDbSetTimeLog.Object);
+
+            mockDbSetTimeLog.Setup(s => s.Find(1L)).Returns(new TimeLog { Id = 1 });
+            mockDbContext.Setup(s => s.SaveChanges()).Throws(new DbUpdateException("", new Exception()));
+
+            var model = new DeleteLogViewModel()
+            {
+                TimeLogId = 1
+            };
+
+            _controller = new TimeLogsController(_mockLogger.Object, mockDbContext.Object);
+
+            Assert.Throws<DbUpdateException>(() => _controller.DeleteLog(model));
         }
         #endregion
     }

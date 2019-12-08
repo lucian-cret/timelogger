@@ -56,6 +56,7 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(RedirectIfProjectNotFound))]
         [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult LogTime(LogTimeViewModel model)
@@ -63,14 +64,6 @@ namespace TimeLogger.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-
-            //check project with ID exists. EF Core InMemory does not know FK relations
-            var project = _context.Projects.Find(model.ProjectId);
-            if (project == null)
-            {
-                _logger.LogWarning($"Project {model.ProjectId} not found when adding time log.");
-                return RedirectToAction("ProjectsList", "Projects");
             }
 
             TimeLog log = new TimeLog
@@ -111,6 +104,7 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(RedirectIfProjectNotFound))]
         [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult EditLog(LogTimeViewModel model)
@@ -127,19 +121,19 @@ namespace TimeLogger.Controllers
                     timeLog.WorkedHours = model.WorkedHours;
                     timeLog.Description = model.Description;
                     timeLog.Date = model.Date;
-                    timeLog.ProjectId = model.ProjectId;
                     _context.SaveChanges();
                 }
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError("Error updating time log to database.", ex);
+                _logger.LogError("Error updating time log in database.", ex);
                 throw;
             }
             return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(RedirectIfProjectNotFound))]
         [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteLog(DeleteLogViewModel model)
