@@ -14,7 +14,7 @@ using Xunit;
 
 namespace TimeLogger.UnitTests.Controllers
 {
-    public class TimeLogsControllerTests : BaseControllerTests
+    public class TimeLogsControllerTests : BaseTests
     {
         private TimeLogsController _controller;
 

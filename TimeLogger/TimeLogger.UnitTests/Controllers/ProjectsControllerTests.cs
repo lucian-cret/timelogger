@@ -8,7 +8,7 @@ using Xunit;
 
 namespace TimeLogger.UnitTests.Controllers
 {
-    public class ProjectsControllerTests : BaseControllerTests
+    public class ProjectsControllerTests : BaseTests
     {
         private ProjectsController _controller;
 

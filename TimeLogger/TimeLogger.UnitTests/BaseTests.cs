@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Moq;
-using System.Linq;
 using TimeLogger.DAL;
-using TimeLogger.DAL.Entities;
 
-namespace TimeLogger.UnitTests.Controllers
+namespace TimeLogger.UnitTests
 {
-    public class BaseControllerTests
+    public class BaseTests
     {
         public TimeLoggerDbContext DbContextInMemory { get; set; }
 
