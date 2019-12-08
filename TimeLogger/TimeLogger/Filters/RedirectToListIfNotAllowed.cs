@@ -13,8 +13,6 @@ namespace TimeLogger.Filters
         private readonly ILogger<RedirectToListIfNotAllowed> _logger;
         private readonly TimeLoggerDbContext _dbContext;
 
-        private const string _requiredParameterName = "projectId";
-
         public RedirectToListIfNotAllowed(TimeLoggerDbContext dbContext, ILogger<RedirectToListIfNotAllowed> logger)
         {
             _logger = logger;
@@ -22,38 +20,39 @@ namespace TimeLogger.Filters
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!context.ModelState.IsValid)
-            {
-                context.Result = new RedirectToActionResult("ProjectsList", "Projects", null);
-            }
-            //check for projectId parameter
-            var projectIdKeyValuePair = context.ActionArguments.SingleOrDefault(p => p.Key.Equals(_requiredParameterName));
+            int projectId = GetParameterFromRequest<int>(context, "projectId");
 
-            int projectId = 0;
-
-            if (projectIdKeyValuePair.Key != null)
+            if (projectId == 0)
             {
-                projectId = (int)projectIdKeyValuePair.Value;
-            }
-
-            //check for projectId in form collection
-            if (projectId == 0 && context.HttpContext.Request.HasFormContentType)
-            {
-                var formCollection = context.HttpContext.Request.Form;
-                if (formCollection.ContainsKey(_requiredParameterName))
+                long timeLogId = GetParameterFromRequest<long>(context, "timeLogId");
+                if (timeLogId != 0)
                 {
-                    projectId = int.Parse(formCollection[_requiredParameterName].ToString());
+                    var timeLog = _dbContext.TimeLogs.Find(timeLogId);
+                    if (timeLog != null)
+                    {
+                        projectId = timeLog.ProjectId;
+                    }
                 }
             }
 
             if (projectId == 0)
             {
-                _logger.LogWarning($"Required parameter for redirection to list missing: {_requiredParameterName}. Redirecting to homepage.");
+                _logger.LogWarning($"Could not retrieve projectId. Redirecting to homepage.");
                 context.Result = new RedirectToActionResult("ProjectsList", "Projects", null);
                 return;
             }
 
             context.Result = CheckProjectDeadline(projectId, context.ActionDescriptor.DisplayName);
+        }
+
+        private T GetParameterFromRequest<T>(ActionExecutingContext context, string parameterName)
+        {
+            if (context.ModelState.TryGetValue(parameterName, out var modelState)
+                && modelState.RawValue is string parameterValueAsString)
+            {
+                return (T)Convert.ChangeType(parameterValueAsString, typeof(T));
+            }
+            return default(T);
         }
 
         private RedirectToActionResult CheckProjectDeadline(int projectId, string actionName)

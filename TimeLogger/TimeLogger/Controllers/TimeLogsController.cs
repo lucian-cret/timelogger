@@ -81,12 +81,12 @@ namespace TimeLogger.Controllers
         }
 
         [HttpGet]
-        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
-        public IActionResult EditLog(long logId)
+        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        public IActionResult EditLog(long timeLogId)
         {
-            if (logId != 0)
+            if (timeLogId != 0)
             {
-                var timeLog = _context.TimeLogs.Find(logId);                
+                var timeLog = _context.TimeLogs.Find(timeLogId);                
                 if (timeLog != null)
                 {
                     var viewModel = new LogTimeViewModel(timeLog);
@@ -98,7 +98,7 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
-        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult EditLog(LogTimeViewModel model)
         {
