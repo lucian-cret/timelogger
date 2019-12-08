@@ -41,12 +41,16 @@ namespace TimeLogger.Controllers
         {
             if (projectId != 0)
             {
-                var viewModel = new LogTimeViewModel
+                var project = _context.Projects.Find(projectId);
+                if (project != null)
                 {
-                    ProjectId = projectId,
-                    Date = DateTime.Today
-                };
-                return View(viewModel);
+                    var viewModel = new LogTimeViewModel
+                    {
+                        ProjectId = projectId,
+                        Date = DateTime.Today
+                    };
+                    return View(viewModel);
+                }
             }
             return RedirectToAction("ProjectsList", "Projects");
         }
@@ -60,6 +64,15 @@ namespace TimeLogger.Controllers
             {
                 return View(model);
             }
+
+            //check project with ID exists. EF Core InMemory does not know FK relations
+            var project = _context.Projects.Find(model.ProjectId);
+            if (project == null)
+            {
+                _logger.LogWarning($"Project {model.ProjectId} not found when adding time log.");
+                return RedirectToAction("ProjectsList", "Projects");
+            }
+
             TimeLog log = new TimeLog
             {
                 WorkedHours = model.WorkedHours,

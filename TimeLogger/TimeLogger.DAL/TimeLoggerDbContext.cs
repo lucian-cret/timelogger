@@ -6,12 +6,13 @@ namespace TimeLogger.DAL
 {
     public class TimeLoggerDbContext : DbContext
     {
+        public TimeLoggerDbContext() { }
         public TimeLoggerDbContext(DbContextOptions<TimeLoggerDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<TimeLog> TimeLogs { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<TimeLog> TimeLogs { get; set; }
     }
 }

@@ -42,7 +42,7 @@ namespace TimeLogger.Filters
                 return;
             }
 
-            context.Result = CheckProjectDeadline(projectId, context.ActionDescriptor.DisplayName);
+            context.Result = RedirectBasedOnProjectDeadline(projectId, context.ActionDescriptor.DisplayName);
         }
 
         private T GetParameterFromRequest<T>(ActionExecutingContext context, string parameterName)
@@ -55,7 +55,7 @@ namespace TimeLogger.Filters
             return default(T);
         }
 
-        private RedirectToActionResult CheckProjectDeadline(int projectId, string actionName)
+        private RedirectToActionResult RedirectBasedOnProjectDeadline(int projectId, string actionName)
         {
             var project = _dbContext.Projects.Find(projectId);
             if (project != null)
