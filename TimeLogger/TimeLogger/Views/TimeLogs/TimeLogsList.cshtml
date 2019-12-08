@@ -15,6 +15,10 @@
             {
                 <th scope="col"></th>
             }
+            @if (Model.ProjectDeadline > DateTime.Now)
+            {
+                <th scope="col"></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -24,8 +28,14 @@
                 <td>@log.WorkedHours</td>
                 <td>@log.Description</td>
                 <td data-sort="@log.Date.ToString("s")">
-                    @log.Date.ToString("G")
+                    @log.Date.ToString("d")
                 </td>
+                @if (Model.ProjectDeadline > DateTime.Now)
+                {
+                    <td>
+                        <a href="@Url.Action("EditLog", "TimeLogs", new { logId = log.Id})" class="btn btn-primary">Edit</a>
+                    </td>
+                }
                 @if (Model.ProjectDeadline > DateTime.Now)
                 {
                     <td>

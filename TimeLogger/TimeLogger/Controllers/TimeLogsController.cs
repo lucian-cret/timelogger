@@ -43,7 +43,8 @@ namespace TimeLogger.Controllers
             {
                 var viewModel = new LogTimeViewModel
                 {
-                    ProjectId = projectId
+                    ProjectId = projectId,
+                    Date = DateTime.Today
                 };
                 return View(viewModel);
             }
@@ -63,7 +64,7 @@ namespace TimeLogger.Controllers
             {
                 WorkedHours = model.WorkedHours,
                 Description = model.Description,
-                Date = DateTime.Now,
+                Date = model.Date,
                 ProjectId = model.ProjectId
             };
             try
@@ -74,6 +75,52 @@ namespace TimeLogger.Controllers
             catch (DbUpdateException ex)
             {
                 _logger.LogError("Error saving new time log to database.", ex);
+                throw;
+            }
+            return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
+        }
+
+        [HttpGet]
+        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        public IActionResult EditLog(long logId)
+        {
+            if (logId != 0)
+            {
+                var timeLog = _context.TimeLogs.Find(logId);                
+                if (timeLog != null)
+                {
+                    var viewModel = new LogTimeViewModel(timeLog);
+                    viewModel.IsEdit = true;
+                    return View("LogTime", viewModel);
+                }
+            }
+            return RedirectToAction("ProjectsList", "Projects");
+        }
+
+        [HttpPost]
+        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditLog(LogTimeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("LogTime", model);
+            }
+            TimeLog log = new TimeLog
+            {
+                WorkedHours = model.WorkedHours,
+                Description = model.Description,
+                Date = model.Date,
+                ProjectId = model.ProjectId
+            };
+            try
+            {
+                _context.TimeLogs.Update(log);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError("Error updating time log to database.", ex);
                 throw;
             }
             return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
