@@ -14,17 +14,22 @@ namespace TimeLogger
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .ConfigureLogging(options =>
-                {
-                    options.AddConsole();
-                })
+            var host = CreateWebHostBuilder(args)
                 .Build();
 
             host.Run();
+        }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return new WebHostBuilder()
+               .UseKestrel()
+               .UseContentRoot(Directory.GetCurrentDirectory())
+               .UseStartup<Startup>()
+               .ConfigureLogging(options =>
+               {
+                   options.AddConsole();
+               });
         }
     }
 }

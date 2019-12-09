@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeLogger", "TimeLogger\Ti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeLogger.DAL", "TimeLogger.DAL\TimeLogger.DAL.csproj", "{A20455DA-DBCF-4EBE-A7D3-3A4042465DF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeLogger.UnitTests", "TimeLogger.UnitTests\TimeLogger.UnitTests.csproj", "{639DA7A0-2D92-43F2-BB10-73C9B7E53BB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeLogger.UnitTests", "TimeLogger.UnitTests\TimeLogger.UnitTests.csproj", "{639DA7A0-2D92-43F2-BB10-73C9B7E53BB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeLogger.IntegrationTests", "TimeLogger.IntegrationTests\TimeLogger.IntegrationTests.csproj", "{8EE1E249-3661-4439-BB08-BCCFE829041C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{639DA7A0-2D92-43F2-BB10-73C9B7E53BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{639DA7A0-2D92-43F2-BB10-73C9B7E53BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{639DA7A0-2D92-43F2-BB10-73C9B7E53BB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EE1E249-3661-4439-BB08-BCCFE829041C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EE1E249-3661-4439-BB08-BCCFE829041C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EE1E249-3661-4439-BB08-BCCFE829041C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE1E249-3661-4439-BB08-BCCFE829041C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
