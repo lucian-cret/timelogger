@@ -62,15 +62,15 @@ namespace TimeLogger
 
             testProject1.TimeLogs.Add(new TimeLog
             {
-                Date = DateTime.Now.AddHours(-2),
+                DateOfWork = DateTime.Now.AddHours(-2),
                 Description = "Write unit tests",
-                WorkedHours = 2.5f
+                WorkedHours = TimeSpan.FromHours(2.5)
             }); ;
             testProject1.TimeLogs.Add(new TimeLog
             {
-                Date = DateTime.Now.AddHours(-6),
+                DateOfWork = DateTime.Now.AddHours(-6),
                 Description = "Change framework version",
-                WorkedHours = 5.5f
+                WorkedHours = TimeSpan.FromHours(5.5)
             }); ;
 
             var testProject2 = new Project
@@ -83,9 +83,9 @@ namespace TimeLogger
             };
             testProject2.TimeLogs.Add(new TimeLog
             {
-                Date = DateTime.Now.AddHours(-12),
+                DateOfWork = DateTime.Now.AddHours(-12),
                 Description = "test descrption 2",
-                WorkedHours = 0.5f
+                WorkedHours = TimeSpan.FromHours(0.5)
             }); ;
 
             var testProject3 = new Project
@@ -98,27 +98,27 @@ namespace TimeLogger
             };
             testProject3.TimeLogs.Add(new TimeLog
             {
-                Date = DateTime.Now.AddDays(-15),
+                DateOfWork = DateTime.Now.AddDays(-15),
                 Description = "create initial structure",
-                WorkedHours = 2.5f
+                WorkedHours = TimeSpan.FromHours(2.5)
             }); ;
             testProject3.TimeLogs.Add(new TimeLog
             {
-                Date = DateTime.Now.AddDays(-14),
+                DateOfWork = DateTime.Now.AddDays(-14),
                 Description = "design DB",
-                WorkedHours = 1.5f
+                WorkedHours = TimeSpan.FromHours(1.5)
             }); ;
             testProject3.TimeLogs.Add(new TimeLog
             {
-                Date = DateTime.Now.AddDays(-12),
+                DateOfWork = DateTime.Now.AddDays(-12),
                 Description = "add business logic",
-                WorkedHours = 8f
+                WorkedHours = TimeSpan.FromHours(2.5)
             }); ;
             testProject3.TimeLogs.Add(new TimeLog
             {
-                Date = DateTime.Now.AddDays(-8),
+                DateOfWork = DateTime.Now.AddDays(-8),
                 Description = "tests",
-                WorkedHours = 4.5f
+                WorkedHours = TimeSpan.FromHours(4.5)
             }); ;
 
             var testProject4 = new Project

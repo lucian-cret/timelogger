@@ -13,12 +13,12 @@ namespace TimeLogger.Models
         [Display(Name = "Worked hours")]
         [RegularExpression("^[0-9]\\.?[0-9]{0,2}$", ErrorMessage = "The field \"Worked hours\" must have only 2 decimals")]
         [Range(0.5, 8, ErrorMessage = "The field \"Worked hours\" must be between 0,5 and 8.")]
-        public float WorkedHours { get; set; }
+        public TimeSpan WorkedHours { get; set; }
 
         [Required]
         public string Description { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime DateOfWork { get; set; }
 
         public bool IsEdit { get; set; }
 
@@ -31,7 +31,7 @@ namespace TimeLogger.Models
                 this.ProjectId = timeLog.ProjectId;
                 this.WorkedHours = timeLog.WorkedHours;
                 this.Description = timeLog.Description;
-                this.Date = timeLog.Date;
+                this.DateOfWork = timeLog.DateOfWork;
             }
         }
     }

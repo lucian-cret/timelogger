@@ -47,7 +47,7 @@ namespace TimeLogger.Controllers
                     var viewModel = new LogTimeViewModel
                     {
                         ProjectId = projectId,
-                        Date = DateTime.Today
+                        DateOfWork = DateTime.Today
                     };
                     return View(viewModel);
                 }
@@ -69,7 +69,7 @@ namespace TimeLogger.Controllers
             {
                 WorkedHours = model.WorkedHours,
                 Description = model.Description,
-                Date = model.Date,
+                DateOfWork = model.DateOfWork,
                 ProjectId = model.ProjectId
             };
             try
@@ -118,7 +118,7 @@ namespace TimeLogger.Controllers
                 {
                     timeLog.WorkedHours = model.WorkedHours;
                     timeLog.Description = model.Description;
-                    timeLog.Date = model.Date;
+                    timeLog.DateOfWork = model.DateOfWork;
                     _context.SaveChanges();
                 }
             }

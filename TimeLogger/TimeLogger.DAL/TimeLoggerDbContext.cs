@@ -12,6 +12,13 @@ namespace TimeLogger.DAL
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TimeLog>()
+                        .Property(p => p.WorkedHours)
+                        .HasConversion<System.Int64>();
+        }
+
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<TimeLog> TimeLogs { get; set; }
     }
