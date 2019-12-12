@@ -67,7 +67,7 @@ namespace TimeLogger.Controllers
 
             TimeLog log = new TimeLog
             {
-                WorkedHours = model.WorkedHours,
+                Duration = model.Duration,
                 Description = model.Description,
                 DateOfWork = model.DateOfWork,
                 ProjectId = model.ProjectId
@@ -116,7 +116,7 @@ namespace TimeLogger.Controllers
                 var timeLog = _context.TimeLogs.Find(model.TimeLogId);
                 if (timeLog != null)
                 {
-                    timeLog.WorkedHours = model.WorkedHours;
+                    timeLog.Duration = model.Duration;
                     timeLog.Description = model.Description;
                     timeLog.DateOfWork = model.DateOfWork;
                     _context.SaveChanges();

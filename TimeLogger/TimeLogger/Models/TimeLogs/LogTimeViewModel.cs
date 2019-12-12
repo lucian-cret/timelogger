@@ -10,10 +10,17 @@ namespace TimeLogger.Models
 
         public int ProjectId { get; set; }
 
-        [Display(Name = "Worked hours")]
-        [RegularExpression("^[0-9]\\.?[0-9]{0,2}$", ErrorMessage = "The field \"Worked hours\" must have only 2 decimals")]
-        [Range(0.5, 8, ErrorMessage = "The field \"Worked hours\" must be between 0,5 and 8.")]
-        public TimeSpan WorkedHours { get; set; }
+        public TimeSpan Duration
+        {
+            get
+            {
+                return new TimeSpan(DurationHours, DurationMinutes, 0); 
+            }
+        }
+        [Display(Name = "Duration hours")]
+        public int DurationHours { get; set; }
+        [Display(Name = "Duration minutes")]
+        public int DurationMinutes { get; set; }
 
         [Required]
         public string Description { get; set; }
@@ -29,9 +36,10 @@ namespace TimeLogger.Models
             {
                 this.TimeLogId = timeLog.Id;
                 this.ProjectId = timeLog.ProjectId;
-                this.WorkedHours = timeLog.WorkedHours;
                 this.Description = timeLog.Description;
                 this.DateOfWork = timeLog.DateOfWork;
+                this.DurationMinutes = timeLog.Duration.Minutes;
+                this.DurationHours = timeLog.Duration.Hours;
             }
         }
     }

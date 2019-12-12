@@ -64,13 +64,13 @@ namespace TimeLogger
             {
                 DateOfWork = DateTime.Now.AddHours(-2),
                 Description = "Write unit tests",
-                WorkedHours = TimeSpan.FromHours(2.5)
+                Duration = TimeSpan.FromHours(2.5)
             }); ;
             testProject1.TimeLogs.Add(new TimeLog
             {
                 DateOfWork = DateTime.Now.AddHours(-6),
                 Description = "Change framework version",
-                WorkedHours = TimeSpan.FromHours(5.5)
+                Duration = TimeSpan.FromHours(5.5)
             }); ;
 
             var testProject2 = new Project
@@ -85,7 +85,7 @@ namespace TimeLogger
             {
                 DateOfWork = DateTime.Now.AddHours(-12),
                 Description = "test descrption 2",
-                WorkedHours = TimeSpan.FromHours(0.5)
+                Duration = TimeSpan.FromHours(0.5)
             }); ;
 
             var testProject3 = new Project
@@ -100,25 +100,25 @@ namespace TimeLogger
             {
                 DateOfWork = DateTime.Now.AddDays(-15),
                 Description = "create initial structure",
-                WorkedHours = TimeSpan.FromHours(2.5)
+                Duration = TimeSpan.FromHours(2.5)
             }); ;
             testProject3.TimeLogs.Add(new TimeLog
             {
                 DateOfWork = DateTime.Now.AddDays(-14),
                 Description = "design DB",
-                WorkedHours = TimeSpan.FromHours(1.5)
+                Duration = TimeSpan.FromHours(1.5)
             }); ;
             testProject3.TimeLogs.Add(new TimeLog
             {
                 DateOfWork = DateTime.Now.AddDays(-12),
                 Description = "add business logic",
-                WorkedHours = TimeSpan.FromHours(2.5)
+                Duration = TimeSpan.FromHours(2.5)
             }); ;
             testProject3.TimeLogs.Add(new TimeLog
             {
                 DateOfWork = DateTime.Now.AddDays(-8),
                 Description = "tests",
-                WorkedHours = TimeSpan.FromHours(4.5)
+                Duration = TimeSpan.FromHours(4.5)
             }); ;
 
             var testProject4 = new Project

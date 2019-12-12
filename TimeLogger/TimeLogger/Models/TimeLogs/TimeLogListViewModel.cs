@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TimeLogger.DAL.Entities;
+using TimeLogger.Models.TimeLogs;
 
 namespace TimeLogger.Models
 {
@@ -11,7 +10,7 @@ namespace TimeLogger.Models
     {
         public int ProjectId { get; set; }
         public DateTime ProjectDeadline { get; set; }
-        public IList<TimeLog> TimeLogs { get; set; }
+        public IEnumerable<TimeLogListItemViewModel> TimeLogs { get; set; }
 
         public TimeLogListViewModel(Project project)
         {
@@ -19,7 +18,7 @@ namespace TimeLogger.Models
             {
                 ProjectId = project.Id;
                 ProjectDeadline = project.Deadline;
-                TimeLogs = project.TimeLogs.ToList();
+                TimeLogs = project.TimeLogs.Select(s => new TimeLogListItemViewModel(s));
             }
         }
     }
