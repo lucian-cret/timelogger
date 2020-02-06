@@ -18,7 +18,7 @@ namespace TimeLogger.Models.TimeLogs
             var ts = timeLog.Duration;
             var h = ts.Hours == 1 ? "hour" : "hours";
             var m = ts.Minutes == 1 ? "min" : "mins";
-            DurationDescription = string.Format("{0} {1} {2} {3}", ts.Hours, h, ts.Minutes, m);
+            DurationDescription = string.Format("{0} {1} {2} {3}", ts.TotalHours, h, ts.Minutes, m);
         }
     }
 }
