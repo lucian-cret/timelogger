@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TimeLogger.DAL.Entities;
 
 namespace TimeLogger.Models
 {
-    public class LogTimeViewModel : IValidatableObject
+    public class LogTimeViewModel : IValidatableObject, IClientModelValidator
     {
         private const int _minimalDuration = 30;
         public long TimeLogId { get; set; }
@@ -52,8 +53,36 @@ namespace TimeLogger.Models
         {
             if (Duration.TotalMinutes < 30)
             {
-                yield return new ValidationResult($"Duration of work should not be less than {_minimalDuration} minutes", new[] { nameof(DurationHours), nameof(DurationMinutes) });
+                yield return new ValidationResult($"Duration of work should not be less than {_minimalDuration} minutes");
             }
+        }
+
+        public void AddValidation(ClientModelValidationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            MergeAttribute(context.Attributes, "data-val", "true");
+            MergeAttribute(context.Attributes, "data-val-duration", GetErrorMessage());
+
+            MergeAttribute(context.Attributes, "data-val-duration-minvalue", _minimalDuration.ToString());
+        }
+
+        private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
+        {
+            if (attributes.ContainsKey(key))
+            {
+                return false;
+            }
+
+            attributes.Add(key, value);
+            return true;
+        }
+        protected string GetErrorMessage()
+        {
+            return $"Duration of work should not be less than {_minimalDuration} minutes";
         }
     }
 }

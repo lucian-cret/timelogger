@@ -63,3 +63,8 @@ span.error {
 .log-date {
     width: auto;
 }
+
+.validation-summary-errors{
+    color: red;
+    font-style: italic;
+}
