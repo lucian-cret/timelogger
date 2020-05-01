@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using TimeLogger.DAL;
-using TimeLogger.DAL.Entities;
 using TimeLogger.Filters;
 using TimeLogger.Models;
 

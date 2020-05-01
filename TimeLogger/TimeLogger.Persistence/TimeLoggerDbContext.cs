@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using TimeLogger.DAL.Entities;
+using TimeLogger.Domain.Entities;
 
-namespace TimeLogger.DAL
+namespace TimeLogger.Persistence
+
 {
     public class TimeLoggerDbContext : DbContext
     {
@@ -13,6 +13,6 @@ namespace TimeLogger.DAL
         }
 
         public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<TimeLog> TimeLogs { get; set; }
+        public virtual DbSet<TimeRegistration> TimeLogs { get; set; }
     }
 }

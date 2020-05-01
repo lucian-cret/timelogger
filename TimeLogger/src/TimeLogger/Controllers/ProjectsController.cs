@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TimeLogger.DAL;
+using TimeLogger.Domain.DbContexts;
 using TimeLogger.Models;
 
 namespace TimeLogger.Controllers

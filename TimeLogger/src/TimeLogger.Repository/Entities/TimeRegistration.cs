@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TimeLogger.DAL.Entities
+namespace TimeLogger.Domain.Entities
 {
-    public class TimeLog
+    public class TimeRegistration
     {
         public long Id { get; set; }
         public TimeSpan Duration { get; set; }
