@@ -14,5 +14,12 @@ namespace TimeLogger.Persistence
 
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<TimeRegistration> TimeLogs { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.SeedData();
+        }
     }
 }

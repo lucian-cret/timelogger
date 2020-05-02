@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\TimeLogger.Persistence\TimeLogger.Persistence.csproj" />
     <ProjectReference Include="..\..\TimeLogger.Service\TimeLogger.Application.csproj" />
   </ItemGroup>
 
