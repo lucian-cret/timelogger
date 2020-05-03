@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TimeLogger.Application;
+using TimeLogger.Application.Common.Interfaces;
 using TimeLogger.Filters;
 using TimeLogger.Middleware;
 using TimeLogger.Persistence;
+using TimeLogger.UI.Services;
 
 namespace TimeLogger
 {
@@ -16,7 +19,9 @@ namespace TimeLogger
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplication();
             services.AddPersistence();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             //services.AddScoped<IFiltersCommon, FiltersCommon>();
             //services.AddScoped<RedirectToListIfNotAllowed>();
             services.AddControllersWithViews();

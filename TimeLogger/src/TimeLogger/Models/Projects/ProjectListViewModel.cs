@@ -1,17 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using TimeLogger.DAL.Entities;
+﻿using System.Collections.Generic;
+using TimeLogger.Application.Projects;
 
-namespace TimeLogger.Models
+namespace TimeLogger.UI.Models.Projects
 {
     public class ProjectListViewModel
     {
-        public IList<Project> Projects { get; set; }
+        public IList<ProjectModel> Projects { get; set; }
 
-        public ProjectListViewModel(DbSet<Project> projects)
+        public ProjectListViewModel()
         {
-            Projects = projects.ToList();
+            Projects = new List<ProjectModel>();
+        }
+
+        public ProjectListViewModel(IList<ProjectModel> projects)
+        {
+            Projects = projects;
         }
     }
 }

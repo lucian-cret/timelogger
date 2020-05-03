@@ -9,6 +9,22 @@ namespace TimeLogger.Persistence
     {
         public static void SeedData (this ModelBuilder modelBuilder)
         {
+            var freeLancer = new Freelancer()
+            {
+                Id = 1,
+                Name = "Freelancer 1",
+                Customers = new List<Customer>()
+            };
+
+            var customer = new Customer()
+            {
+                Id = 1,
+                Name = "Customer 1",
+                Projects = new List<Project>()
+            };
+
+            freeLancer.Customers.Add(customer);
+
             var testProject1 = new Project
             {
                 Id = 1,
@@ -88,7 +104,12 @@ namespace TimeLogger.Persistence
                 TimeRegistrations = new List<TimeRegistration>()
             };
 
-            modelBuilder.Entity<Project>().HasData(testProject1, testProject2, testProject3, testProject4);
+            customer.Projects.Add(testProject1);
+            customer.Projects.Add(testProject2);
+            customer.Projects.Add(testProject3);
+            customer.Projects.Add(testProject4);
+
+            modelBuilder.Entity<Freelancer>().HasData(freeLancer);
         }
     }
 }

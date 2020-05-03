@@ -1,4 +1,4 @@
-﻿namespace TimeLogger.Models
+﻿namespace TimeLogger.UI.Models.TimeRegistrations
 {
     public class DeleteLogViewModel
     {

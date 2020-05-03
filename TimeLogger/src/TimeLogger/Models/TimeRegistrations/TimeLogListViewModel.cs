@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using TimeLogger.DAL.Entities;
-using TimeLogger.Models.TimeLogs;
+using TimeLogger.Application.Projects;
 
-namespace TimeLogger.Models
+namespace TimeLogger.UI.Models.TimeRegistrations
 {
     public class TimeLogListViewModel
     {
         public int ProjectId { get; set; }
         public DateTime ProjectDeadline { get; set; }
-        public IEnumerable<TimeLogListItemViewModel> TimeLogs { get; set; }
+        public IEnumerable<TimeLogListItemViewModel> TimeRegistrations { get; set; }
 
-        public TimeLogListViewModel(Project project)
+        public TimeLogListViewModel(ProjectModel project)
         {
             if (project != null)
             {
                 ProjectId = project.Id;
                 ProjectDeadline = project.Deadline;
-                TimeLogs = project.TimeLogs.Select(s => new TimeLogListItemViewModel(s));
+                //TimeRegistrations = project..Select(s => new TimeLogListItemViewModel(s));
             }
         }
     }

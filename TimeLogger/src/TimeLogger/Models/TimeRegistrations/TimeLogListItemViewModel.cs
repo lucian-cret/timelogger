@@ -1,7 +1,7 @@
 ﻿using System;
-using TimeLogger.DAL.Entities;
+using TimeLogger.Domain.Entities;
 
-namespace TimeLogger.Models.TimeLogs
+namespace TimeLogger.UI.Models.TimeRegistrations
 {
     public class TimeLogListItemViewModel
     {
@@ -10,12 +10,12 @@ namespace TimeLogger.Models.TimeLogs
         public string Description { get; set; }
         public DateTime DateOfWork { get; set; }
 
-        public TimeLogListItemViewModel (TimeLog timeLog)
+        public TimeLogListItemViewModel (TimeRegistration timeRegistration)
         {
-            Id = timeLog.Id;
-            Description = timeLog.Description;
-            DateOfWork = timeLog.DateOfWork;
-            var ts = timeLog.Duration;
+            Id = timeRegistration.Id;
+            Description = timeRegistration.Description;
+            DateOfWork = timeRegistration.DateOfWork;
+            var ts = timeRegistration.Duration;
             var h = ts.Hours == 1 ? "hour" : "hours";
             var m = ts.Minutes == 1 ? "min" : "mins";
             DurationDescription = string.Format("{0} {1} {2} {3}", ts.TotalHours, h, ts.Minutes, m);

@@ -1,25 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using TimeLogger.Domain.DbContexts;
-using TimeLogger.Models;
+using System.Threading.Tasks;
+using TimeLogger.Application.Projects;
+using TimeLogger.UI.Models.Projects;
 
 namespace TimeLogger.Controllers
 {
 	public class ProjectsController : Controller
     {
-		private readonly ILogger<ProjectsController> _logger;
-		private readonly TimeLoggerDbContext _context;
+		private readonly IProjectService _projectService;
 
-		public ProjectsController(TimeLoggerDbContext context, ILogger<ProjectsController> logger)
+		public ProjectsController(IProjectService projectService)
 		{
-			_logger = logger;
-			_context = context;
+			_projectService = projectService;
 		}
 
 		[HttpGet]
-		public IActionResult ProjectsList()
+		public async Task<IActionResult> ProjectsList()
 		{
-			var viewModel = new ProjectListViewModel(_context.Projects);
+			var projectsList = await _projectService.GetProjectsAsync();
+			var viewModel = new ProjectListViewModel(projectsList);
 			return View(viewModel);
 		}
 	}

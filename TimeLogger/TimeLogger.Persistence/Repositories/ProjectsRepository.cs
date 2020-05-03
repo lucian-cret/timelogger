@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TimeLogger.Application;
+using TimeLogger.Application.Projects;
 using TimeLogger.Domain.Entities;
 
 namespace TimeLogger.Persistence
 {
-    public class TimeLoggerRepository : ITimeLoggerRepository
+    public class ProjectsRepository : IProjectsRepository
     {
+        private readonly TimeLoggerDbContext _context;
+
+        public ProjectsRepository(TimeLoggerDbContext context)
+        {
+            _context = context;
+        }
+
         public Task AddProjectAsync(Project project)
         {
             throw new NotImplementedException();
@@ -21,6 +26,16 @@ namespace TimeLogger.Persistence
         }
 
         public Task<Project> GetProjectAsync(int projectId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Project>> GetProjectsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateProjectAsync(Project project)
         {
             throw new NotImplementedException();
         }

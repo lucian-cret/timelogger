@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TimeLogger.DAL.Entities;
+using TimeLogger.Domain.Entities;
 
-namespace TimeLogger.Models
+namespace TimeLogger.UI.Models.TimeRegistrations
 {
     public class LogTimeViewModel : IValidatableObject, IClientModelValidator
     {
@@ -36,16 +36,16 @@ namespace TimeLogger.Models
         public bool IsEdit { get; set; }
 
         public LogTimeViewModel() { }
-        public LogTimeViewModel(TimeLog timeLog)
+        public LogTimeViewModel(TimeRegistration timeRegistration)
         {
-            if (timeLog != null)
+            if (timeRegistration != null)
             {
-                this.TimeLogId = timeLog.Id;
-                this.ProjectId = timeLog.ProjectId;
-                this.Description = timeLog.Description;
-                this.DateOfWork = timeLog.DateOfWork;
-                this.DurationMinutes = timeLog.Duration.Minutes;
-                this.DurationHours = timeLog.Duration.Hours;
+                this.TimeLogId = timeRegistration.Id;
+                this.ProjectId = timeRegistration.ProjectId;
+                this.Description = timeRegistration.Description;
+                this.DateOfWork = timeRegistration.DateOfWork;
+                this.DurationMinutes = timeRegistration.Duration.Minutes;
+                this.DurationHours = timeRegistration.Duration.Hours;
             }
         }
 
