@@ -12,4 +12,8 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TimeLogger\TimeLogger.UI.csproj" />
+  </ItemGroup>
+
 </Project>

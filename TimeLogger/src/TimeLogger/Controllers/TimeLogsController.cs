@@ -2,59 +2,56 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
+using TimeLogger.Application.TimeRegistrations;
 using TimeLogger.Filters;
-using TimeLogger.Models;
+using TimeLogger.UI.Models.TimeRegistrations;
 
 namespace TimeLogger.Controllers
 {
     public class TimeLogsController : Controller
     {
         private readonly ILogger<TimeLogsController> _logger;
-        private readonly TimeLoggerDbContext _context;
-        public TimeLogsController(ILogger<TimeLogsController> logger, TimeLoggerDbContext context)
+        private readonly ITimeRegistrationsService _service;
+        public TimeLogsController(ILogger<TimeLogsController> logger, ITimeRegistrationsService service)
         {
             _logger = logger;
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public IActionResult TimeLogsList(int projectId)
+        public async Task<IActionResult> TimeLogsList(int projectId)
         {
-            if (projectId != 0)
+            var timeRegistrations = await _service.GetTimeRegistrationsByProject(projectId);
+            var viewModel = new TimeRegistrationListViewModel()
             {
-                var project = _context.Projects.Find(projectId);
-                if (project != null)
-                {
-                    _context.Entry(project).Collection(t => t.TimeLogs).Load();
-                    var viewModel = new TimeLogListViewModel(project);
-                    return View(viewModel);
-                }
-            }
-            return RedirectToAction("ProjectsList", "Projects");
+                
+            };
+            return View(viewModel);
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         public IActionResult LogTime(int projectId)
         {
             if (projectId != 0)
             {
-                var project = _context.Projects.Find(projectId);
-                if (project != null)
-                {
-                    var viewModel = new LogTimeViewModel
-                    {
-                        ProjectId = projectId,
-                        DateOfWork = DateTime.Today
-                    };
-                    return View(viewModel);
-                }
+                //var project = _context.Projects.Find(projectId);
+                //if (project != null)
+                //{
+                //    var viewModel = new LogTimeViewModel
+                //    {
+                //        ProjectId = projectId,
+                //        DateOfWork = DateTime.Today
+                //    };
+                //    return View(viewModel);
+                //}
             }
             return RedirectToAction("ProjectsList", "Projects");
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult LogTime(LogTimeViewModel model)
         {
@@ -63,45 +60,45 @@ namespace TimeLogger.Controllers
                 return View(model);
             }
 
-            TimeLog log = new TimeLog
-            {
-                Duration = model.Duration,
-                Description = model.Description,
-                DateOfWork = model.DateOfWork,
-                ProjectId = model.ProjectId
-            };
-            try
-            {
-                _context.TimeLogs.Add(log);
-                _context.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-                _logger.LogError("Error saving new time log to database.", ex);
-                throw;
-            }
+            //TimeLog log = new TimeLog
+            //{
+            //    Duration = model.Duration,
+            //    Description = model.Description,
+            //    DateOfWork = model.DateOfWork,
+            //    ProjectId = model.ProjectId
+            //};
+            //try
+            //{
+            //    _context.TimeLogs.Add(log);
+            //    _context.SaveChanges();
+            //}
+            //catch (DbUpdateException ex)
+            //{
+            //    _logger.LogError("Error saving new time log to database.", ex);
+            //    throw;
+            //}
             return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         public IActionResult EditLog(long timeLogId)
         {
             if (timeLogId != 0)
             {
-                var timeLog = _context.TimeLogs.Find(timeLogId);                
-                if (timeLog != null)
-                {
-                    var viewModel = new LogTimeViewModel(timeLog);
-                    viewModel.IsEdit = true;
-                    return View("LogTime", viewModel);
-                }
+                //var timeLog = _context.TimeLogs.Find(timeLogId);                
+                //if (timeLog != null)
+                //{
+                //    var viewModel = new LogTimeViewModel(timeLog);
+                //    viewModel.IsEdit = true;
+                //    return View("LogTime", viewModel);
+                //}
             }
             return RedirectToAction("ProjectsList", "Projects");
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult EditLog(LogTimeViewModel model)
         {
@@ -111,14 +108,14 @@ namespace TimeLogger.Controllers
             }
             try
             {
-                var timeLog = _context.TimeLogs.Find(model.TimeLogId);
-                if (timeLog != null)
-                {
-                    timeLog.Duration = model.Duration;
-                    timeLog.Description = model.Description;
-                    timeLog.DateOfWork = model.DateOfWork;
-                    _context.SaveChanges();
-                }
+                //var timeLog = _context.TimeLogs.Find(model.TimeLogId);
+                //if (timeLog != null)
+                //{
+                //    timeLog.Duration = model.Duration;
+                //    timeLog.Description = model.Description;
+                //    timeLog.DateOfWork = model.DateOfWork;
+                //    _context.SaveChanges();
+                //}
             }
             catch (DbUpdateException ex)
             {
@@ -129,28 +126,28 @@ namespace TimeLogger.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(RedirectToListIfNotAllowed))]
+        //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteLog(DeleteLogViewModel model)
         {
-            var timeLog = _context.TimeLogs.Find(model.TimeLogId);
-            if (timeLog != null)
-            {
-                try
-                {
-                    _context.Remove(timeLog);
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    _logger.LogError($"Error deleting time log {model.TimeLogId} from database.", ex);
-                    throw;
-                }
-            }
-            else
-            {
-                _logger.LogWarning($"Tried deleting time log {model.TimeLogId} but it was not found.");
-            }
+            //var timeLog = _context.TimeLogs.Find(model.TimeLogId);
+            //if (timeLog != null)
+            //{
+            //    try
+            //    {
+            //        _context.Remove(timeLog);
+            //        _context.SaveChanges();
+            //    }
+            //    catch (DbUpdateException ex)
+            //    {
+            //        _logger.LogError($"Error deleting time log {model.TimeLogId} from database.", ex);
+            //        throw;
+            //    }
+            //}
+            //else
+            //{
+            //    _logger.LogWarning($"Tried deleting time log {model.TimeLogId} but it was not found.");
+            //}
 
             return RedirectToAction("TimeLogsList", new { projectId = model.ProjectId });
         }

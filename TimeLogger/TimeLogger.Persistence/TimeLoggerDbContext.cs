@@ -15,7 +15,7 @@ namespace TimeLogger.Persistence
         public virtual DbSet<Freelancer> Freelancers { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<TimeRegistration> TimeLogs { get; set; }
+        public virtual DbSet<TimeRegistration> TimeRegistrations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

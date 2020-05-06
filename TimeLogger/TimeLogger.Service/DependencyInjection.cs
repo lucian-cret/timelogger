@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using TimeLogger.Application.Customers;
 using TimeLogger.Application.Projects;
 
 namespace TimeLogger.Application
@@ -11,6 +12,7 @@ namespace TimeLogger.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ICustomersService, CustomersService>();
 
             return services;
         }

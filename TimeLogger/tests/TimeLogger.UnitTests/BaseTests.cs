@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TimeLogger.DAL;
+using TimeLogger.Persistence;
 
 namespace TimeLogger.UnitTests
 {

@@ -15,9 +15,9 @@ namespace TimeLogger.Application.Projects
             _mapper = mapper;
         }
 
-        public async Task<IList<ProjectModel>> GetProjectsAsync()
+        public async Task<IList<ProjectModel>> GetProjectsByCustomerAsync(int customerId)
         {
-            var projectsList = await _repository.GetProjectsAsync();
+            var projectsList = await _repository.GetProjectsByCustomerAsync(customerId);
             return _mapper.Map<IList<ProjectModel>>(projectsList);
         }
     }

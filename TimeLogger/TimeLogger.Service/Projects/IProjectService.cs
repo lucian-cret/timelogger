@@ -5,6 +5,6 @@ namespace TimeLogger.Application.Projects
 {
     public interface IProjectService
     {
-        Task<IList<ProjectModel>> GetProjectsAsync();
+        Task<IList<ProjectModel>> GetProjectsByCustomerAsync(int customerId);
     }
 }

@@ -1,0 +1,23 @@
+﻿@model CustomersByFreelancerViewModel
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                Name
+            </div>
+            <div class="col-sm">
+
+            </div>
+        </div>
+        @foreach (var customer in Model.Customers)
+        {
+            <div class="row">
+                <div class="col-sm">
+                    @customer.Name
+                </div>
+                <div class="col-sm">
+                    <a href="@Url.Action("ProjectsByCustomer", "Projects", new { customerId = customer.Id})" class="btn btn-primary" role="button" />
+                </div>
+            </div>
+        }
+    </div>

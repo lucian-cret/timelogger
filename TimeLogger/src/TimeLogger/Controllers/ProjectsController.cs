@@ -15,10 +15,10 @@ namespace TimeLogger.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> ProjectsList()
+		public async Task<IActionResult> ProjectsByCustomer(int customerId)
 		{
-			var projectsList = await _projectService.GetProjectsAsync();
-			var viewModel = new ProjectListViewModel(projectsList);
+			var projectsList = await _projectService.GetProjectsByCustomerAsync(customerId);
+			var viewModel = new ProjectByCustomerViewModel(projectsList);
 			return View(viewModel);
 		}
 	}

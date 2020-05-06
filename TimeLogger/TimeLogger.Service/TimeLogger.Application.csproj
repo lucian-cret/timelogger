@@ -12,9 +12,4 @@
     <ProjectReference Include="..\src\TimeLogger.Repository\TimeLogger.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Customers\" />
-    <Folder Include="Freelancers\" />
-  </ItemGroup>
-
 </Project>

@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace TimeLogger.Domain.Entities
+namespace TimeLogger.UI.Models.TimeRegistrations
 {
-    public class TimeRegistration
+    public class TimeRegistrationListItemViewModel
     {
         public long Id { get; set; }
-        public TimeSpan Duration { get; set; }
+        public string DurationDescription { get; set; }
         public string Description { get; set; }
         public DateTime DateOfWork { get; set; }
-        public int ProjectId { get; set; }
     }
 }

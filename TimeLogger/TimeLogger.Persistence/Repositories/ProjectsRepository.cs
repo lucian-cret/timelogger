@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TimeLogger.Application.Projects;
 using TimeLogger.Domain.Entities;
@@ -30,9 +32,9 @@ namespace TimeLogger.Persistence
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Project>> GetProjectsAsync()
+        public async Task<IEnumerable<Project>> GetProjectsByCustomerAsync(int customerId)
         {
-            throw new NotImplementedException();
+            return await _context.Projects.Where(x => x.CustomerId == customerId).ToListAsync();
         }
 
         public Task UpdateProjectAsync(Project project)

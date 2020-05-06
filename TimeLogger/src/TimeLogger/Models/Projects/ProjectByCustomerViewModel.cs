@@ -3,16 +3,16 @@ using TimeLogger.Application.Projects;
 
 namespace TimeLogger.UI.Models.Projects
 {
-    public class ProjectListViewModel
+    public class ProjectByCustomerViewModel
     {
         public IList<ProjectModel> Projects { get; set; }
 
-        public ProjectListViewModel()
+        public ProjectByCustomerViewModel()
         {
             Projects = new List<ProjectModel>();
         }
 
-        public ProjectListViewModel(IList<ProjectModel> projects)
+        public ProjectByCustomerViewModel(IList<ProjectModel> projects)
         {
             Projects = projects;
         }

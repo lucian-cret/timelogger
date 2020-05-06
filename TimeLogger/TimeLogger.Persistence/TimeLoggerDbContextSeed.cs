@@ -13,14 +13,14 @@ namespace TimeLogger.Persistence
             {
                 Id = 1,
                 Name = "Freelancer 1",
-                Customers = new List<Customer>()
+                //Customers = new List<Customer>()
             };
 
             var customer = new Customer()
             {
                 Id = 1,
                 Name = "Customer 1",
-                Projects = new List<Project>()
+                //Projects = new List<Project>()
             };
 
             freeLancer.Customers.Add(customer);
