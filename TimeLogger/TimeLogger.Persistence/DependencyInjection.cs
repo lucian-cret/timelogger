@@ -12,7 +12,9 @@ namespace TimeLogger.Persistence
     {
         public static void AddPersistence(this IServiceCollection services)
         {
-            services.AddDbContext<TimeLoggerDbContext>(options => options.UseInMemoryDatabase("TimeLogger"));
+            services.AddDbContext<TimeLoggerDbContext>(options => 
+                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TimeLogger;Trusted_Connection=True;MultipleActiveResultSets=true"
+            ));
             services.AddScoped<IProjectsRepository, ProjectsRepository>();
             services.AddScoped<IFreelancersRepository, FreelancersRepository>();
             services.AddScoped<ICustomersRepository, CustomersRepository>();

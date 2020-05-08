@@ -10,7 +10,7 @@ namespace TimeLogger.UnitTests
         public TimeLoggerDbContext GetDatabaseContext(string databaseName)
         {
             var options = new DbContextOptionsBuilder<TimeLoggerDbContext>()
-                .UseInMemoryDatabase(databaseName)
+                //.UseInMemoryDatabase(databaseName)
                 .Options;
             var databaseContext = new TimeLoggerDbContext(options);
             databaseContext.Database.EnsureCreated();
