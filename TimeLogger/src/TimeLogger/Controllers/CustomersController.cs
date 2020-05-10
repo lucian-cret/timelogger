@@ -15,9 +15,9 @@ namespace TimeLogger.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCustomers(int freelancerId)
+        public async Task<IActionResult> GetCustomers()
         {
-            var customers = await _customersService.GetCustomersByFreelancer(freelancerId);
+            var customers = await _customersService.GetCustomersForCurrentUser();
             var viewModel = new CustomersByFreelancerViewModel(customers);
             return View(viewModel);
         }

@@ -5,6 +5,6 @@ namespace TimeLogger.Application.Customers
 {
     public interface ICustomersService
     {
-        Task<IList<CustomerModel>> GetCustomersByFreelancer(int freelancer);
+        Task<IList<CustomerModel>> GetCustomersForCurrentUser();
     }
 }
