@@ -1,31 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TimeLogger.Application.TimeRegistrations;
-using TimeLogger.Filters;
 using TimeLogger.UI.Models.TimeRegistrations;
 
 namespace TimeLogger.Controllers
 {
-    public class TimeLogsController : Controller
+    public class TimeRegistrationsController : Controller
     {
-        private readonly ILogger<TimeLogsController> _logger;
+        private readonly ILogger<TimeRegistrationsController> _logger;
         private readonly ITimeRegistrationsService _service;
-        public TimeLogsController(ILogger<TimeLogsController> logger, ITimeRegistrationsService service)
+        private readonly IMapper _mapper;
+
+        public TimeRegistrationsController(ILogger<TimeRegistrationsController> logger, ITimeRegistrationsService service, IMapper mapper)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> TimeLogsList(int projectId)
+        public async Task<IActionResult> TimeRegistrationsList(int projectId)
         {
             var timeRegistrations = await _service.GetTimeRegistrationsByProject(projectId);
+            var tr = _mapper.Map<List<TimeRegistrationListItemViewModel>>(timeRegistrations);
             var viewModel = new TimeRegistrationListViewModel()
             {
-                
+                TimeRegistrations = tr
             };
             return View(viewModel);
         }
@@ -82,7 +86,7 @@ namespace TimeLogger.Controllers
 
         [HttpGet]
         //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
-        public IActionResult EditLog(long timeLogId)
+        public IActionResult EditTimeRegistration(long timeLogId)
         {
             if (timeLogId != 0)
             {
@@ -100,7 +104,7 @@ namespace TimeLogger.Controllers
         [HttpPost]
         //[ServiceFilter(typeof(RedirectToListIfNotAllowed))]
         [ValidateAntiForgeryToken]
-        public IActionResult EditLog(LogTimeViewModel model)
+        public IActionResult EditTimeRegistration(LogTimeViewModel model)
         {
             if (!ModelState.IsValid)
             {

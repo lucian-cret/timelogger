@@ -1,0 +1,55 @@
+﻿@model TimeRegistrationListViewModel
+@{
+    ViewData["Title"] = "Time logs";
+}
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Worked hours</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                @if (Model.ProjectDeadline > DateTime.Now)
+                {
+                    <th scope="col"></th>
+                }
+                @if (Model.ProjectDeadline > DateTime.Now)
+                {
+                    <th scope="col"></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var timeLog in Model.TimeRegistrations)
+            {
+                <tr>
+                    <td>@timeLog.DurationDescription</td>
+                    <td>@timeLog.Description</td>
+                    <td>@timeLog.DateOfWork.ToString("d")</td>
+                    @if (Model.ProjectDeadline > DateTime.Now)
+                    {
+                        <td>
+                            <a href="@Url.Action("EditLog", "TimeLogs", new { timeLogId = timeLog.Id})" class="btn btn-sm btn-primary">Edit</a>
+                        </td>
+                    }
+                    @if (Model.ProjectDeadline > DateTime.Now)
+                    {
+                        <td>
+                            <form asp-controller="TimeLogs" asp-action="DeleteLog">
+                                <input type="hidden" id="TimeLogId" name="TimeLogId" value="@timeLog.Id" />
+                                <input type="hidden" id="ProjectId" name="ProjectId" value="@Model.ProjectId" />
+                                <button type="submit" class="btn btn-sm btn-primary">Delete</button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.ProjectDeadline > DateTime.Now)
+{
+    <a class="btn btn-primary" href="@Url.Action("LogTime", "TimeLogs", new { projectId = Model.ProjectId })" role="button">Log time</a>
+    <br />
+}
+<a class="btn btn-secondary mt-2" href="@Url.Action("ProjectsList", "Projects")" role="button">Back to projects list</a>

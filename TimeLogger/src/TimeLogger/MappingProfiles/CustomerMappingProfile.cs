@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using TimeLogger.Application.Customers;
 using TimeLogger.Domain.Entities;
 
-namespace TimeLogger.Application.Customers
+namespace TimeLogger.UI.MappingProfiles
 {
     public class CustomerMappingProfile : Profile
     {

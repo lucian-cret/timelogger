@@ -13,9 +13,9 @@ namespace TimeLogger.UnitTests.Controllers
 {
     public class TimeLogsControllerTests : BaseTests
     {
-        private TimeLogsController _controller;
+        private TimeRegistrationsController _controller;
 
-        private readonly Mock<ILogger<TimeLogsController>> _mockLogger = new Mock<ILogger<TimeLogsController>>();
+        private readonly Mock<ILogger<TimeRegistrationsController>> _mockLogger = new Mock<ILogger<TimeRegistrationsController>>();
 
         public TimeLogsControllerTests()
         {

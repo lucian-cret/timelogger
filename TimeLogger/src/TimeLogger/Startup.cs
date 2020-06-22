@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ namespace TimeLogger
             services.AddApplication();
             services.AddPersistence();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddAutoMapper(typeof(Startup));
             //services.AddScoped<IFiltersCommon, FiltersCommon>();
             //services.AddScoped<RedirectToListIfNotAllowed>();
             services.AddControllersWithViews();
